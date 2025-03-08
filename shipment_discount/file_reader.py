@@ -1,5 +1,5 @@
 import logging
-from models import Transaction
+from shipment_discount.models import Transaction
 
 
 def read_transactions_from_file(file_path):
@@ -7,10 +7,10 @@ def read_transactions_from_file(file_path):
     try:
         with file_path.open() as file:
             for line in file:
-                # split one string line to a list of strings
                 separated_members = line.split()
+
                 if Transaction.is_valid(separated_members):
-                    # create a Transaction object for valid lines
+
                     transaction = Transaction(separated_members[0],
                                               separated_members[1],
                                               separated_members[2])
