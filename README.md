@@ -67,11 +67,14 @@ Setup & Usage
 
 Ensure that Python is installed on your system, as it is required to run this project.
 
-### Running the Program
+### Running the Program and Tests
 
 1. Clone this repository.
-2. Run the program:
+2. To run the program:
      ```sh
      python main.py
      ```
-3. The output will be displayed on the screen.
+3. To run all tests:
+     ```sh
+     python -m unittest discover
+     ```

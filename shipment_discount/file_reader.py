@@ -1,5 +1,5 @@
 import logging
-from shipment_discount.models import Transaction
+from .models import Transaction
 
 
 def read_transactions_from_file(file_path):

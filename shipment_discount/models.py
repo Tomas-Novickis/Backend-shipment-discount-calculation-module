@@ -1,7 +1,6 @@
 import datetime
 from .config import (VALID_PROVIDERS,
-                     VALID_SIZES,
-                     MONTHLY_DISCOUNT_LIMIT, PRICES)
+                     VALID_SIZES, PRICES)
 
 
 class Transaction:
@@ -25,7 +24,7 @@ class Transaction:
                     data[1] in VALID_SIZES and
                     data[2] in VALID_PROVIDERS
             )
-        except ValueError:
+        except (ValueError, TypeError):
             return False
 
 
@@ -40,6 +39,8 @@ class Rules:
             PRICES[provider]['S']
             for provider in VALID_PROVIDERS
         )
+        # Define monthly discount limit
+        self.monthly_discount_limit = 10
 
     def apply_rules(self, transaction):
         """Apply all discount rules"""
@@ -54,10 +55,10 @@ class Rules:
 
         # Ensure that the total discount doesn’t exceed the monthly limit.
         discount = min(discount,
-                       MONTHLY_DISCOUNT_LIMIT - self.monthly_discount_used)
+                       self.monthly_discount_limit - self.monthly_discount_used)
         self.monthly_discount_used += discount
 
-        return discount if discount > 0 else no_discount
+        return round(discount, 2) if discount > 0 else no_discount
 
     def _rule_free_lp_shipment(self, transaction):
         """Rule: The third L shipment via LP is free, but only once a month."""
@@ -67,7 +68,7 @@ class Rules:
                 # Ensure that this discount doesn’t exceed the monthly limit
                 # to catch potential issues with the discount earlier
                 return min(transaction.price,
-                           MONTHLY_DISCOUNT_LIMIT - self.monthly_discount_used)
+                           self.monthly_discount_limit - self.monthly_discount_used)
         return 0
 
     def _rule_lowest_s_price(self, transaction):

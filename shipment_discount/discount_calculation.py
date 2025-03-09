@@ -1,4 +1,4 @@
-from shipment_discount.models import Rules, Transaction
+from .models import Rules, Transaction
 from collections import defaultdict
 
 
